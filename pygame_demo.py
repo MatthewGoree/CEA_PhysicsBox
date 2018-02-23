@@ -85,9 +85,9 @@ while 1:
             Fdy = 6 * numpy.pi * liquid.viscosity * radius * speed[1]
         if ballrect.bottom == height:
             if speed[0] > 0:
-                acc_fric = friction * gravity
+                acc_fric = friction * (gravity - buoyancy/mass)
             else:
-                acc_fric = -friction * gravity
+                acc_fric = -friction * (gravity - buoyancy/mass)
         else:
             acc_fric = 0
         acc_dx = Fdx / mass
