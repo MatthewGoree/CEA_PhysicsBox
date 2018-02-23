@@ -1,6 +1,5 @@
-# Conventions:
-# atm 1 pixel = 1 m; 1 iteration = 1 sec
-# Decide on uniform framerate?
+# Conversions:
+# atm 100 pixels = 1 m; 1 iteration = 1 sec
 
 import sys, pygame, numpy
 from properties import *
