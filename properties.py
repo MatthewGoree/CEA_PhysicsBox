@@ -1,8 +1,5 @@
 # All values at 25C
-# Why are there so many kinds of syrup
 import pygame
-
-#test push
 
 class liquid:
     def __init__(self, density, color, viscosity):
