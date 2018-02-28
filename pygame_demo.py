@@ -25,16 +25,12 @@ tmove = [6,0]
 
 screen = pygame.display.set_mode(size)
 
-ball_size = [2*radius, 2*radius]
 radius = 50
+ball_size = [2*radius, 2*radius]
 ball = pygame.image.load("ball.png")
 ball = pygame.transform.scale(ball, ball_size)
 
 ball = MassObject("ball.png", radius, material)
-
-ball = MassObject("ball.png", 50, copper)
-
-#buoyancy = ball.volume * gravity * liquid.density
 
 while 1:
 
