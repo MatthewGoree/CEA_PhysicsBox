@@ -21,11 +21,7 @@ def color_surface(surface, color):
     arr[:,:,0] = color[0]
     arr[:,:,1] = color[1]
     arr[:,:,2] = color[2]
-
-def buoyancy(mass_object, liquid, gravity):
-    return mass_object.volume * gravity * liquid.density
-
-
+    
 
 # Units converted using 100 pixels = 1 m
 water = liquid(1000, (0, 255, 255), .089)
