@@ -1,8 +1,5 @@
 # All values at 25C
-# Why are there so many kinds of syrup
 import pygame
-
-#test push
 
 class liquid:
     def __init__(self, density, color, viscosity):
@@ -24,10 +21,6 @@ def color_surface(surface, color):
     arr[:,:,0] = color[0]
     arr[:,:,1] = color[1]
     arr[:,:,2] = color[2]
-
-def buoyancy(mass_object, liquid, gravity):
-    return mass_object.volume * gravity * liquid.density
-
 
 
 # Units converted using 100 pixels = 1 m
