@@ -74,6 +74,7 @@ class Particle:
         self.angle = 5
         self.angle *= (180/math.pi)
         self.drag = drag_air
+        self.magnetization = 0
 
 
     def display(self):
@@ -176,5 +177,3 @@ while running:
         particle.display()
 
     pygame.display.flip()
-
-
