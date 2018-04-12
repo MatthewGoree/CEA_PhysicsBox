@@ -1,6 +1,16 @@
 import pygame
 import math
 import random
+import numpy
+
+
+
+
+
+
+
+
+
 
 '''Taken and adapted from http://www.petercollingridge.co.uk/pygame-physics-simulation/'''
 
@@ -11,7 +21,7 @@ background_color = (255,255,255)    #white
 drag_air = 0.9995                   #aero drag
 drag_water = 0.995                  #hydro drag
 elasticity = 0.75                   #bounce factor
-gravity = (math.pi, 0.002)          #pi is downward angle, 0.002 is estimated value of gravity in pygame
+gravity = (math.pi, 0.00)          #pi is downward angle, 0.002 is estimated value of gravity in pygame
 
 
 '''Function that compares the coordinates of a particle to the coordinates of the clicked mouse'''
@@ -61,6 +71,20 @@ def collide(p1, p2):
         p1.y -= math.cos(angle)
         p2.x -= math.sin(angle)
         p2.y += math.cos(angle)
+
+
+def magnetizism(p1, p2):
+    dx = p1.x - p2.x
+    dy = p1.y - p2.y
+
+    dist = math.hypot(dx, dy)  # distance between 2 particles
+    #tangent = math.atan2(dy, dx)   #idk how this is actually the tangent but it is
+    angleTo = -math.atan((dx/dy))
+
+    p1.angle = angleTo
+    p1.speed = p2.magnetization
+
+
 
 
 class Particle:
@@ -122,7 +146,7 @@ screen.fill(background_color)
 pygame.draw.rect(screen, (0,0,255), (height/2,width/2, 200, 200), 10)       #body of water
 pygame.display.set_caption('CEA Physics Box')
 
-number_of_particles = 2
+number_of_particles = 1
 my_particles = []
 
 for n in range(number_of_particles):
@@ -137,6 +161,16 @@ for n in range(number_of_particles):
     my_particles.append(particle)
 
 selected_particle = None
+
+
+
+part2 = Particle(50, 50, 40)
+part2.color = (100,255,100)
+part2.magnetization = 2
+
+my_particles.append(part2)
+
+
 
 '''Infinite loop to keep the program open until the user exits'''
 running = True
@@ -174,6 +208,7 @@ while running:
         particle.bounce()
         for particle2 in my_particles[i+1:]:
             collide(particle, particle2)
+            magnetizism(particle, particle2)
         particle.display()
 
     pygame.display.flip()
