@@ -1,12 +1,12 @@
 import numpy as np
-from properties import *
+
 
 
 def acc_buoyancy(mass_object, liquid, liquid_height, gravity):
     # Checks if mass is submerged or partially submerged in liquid
-    if mass_object.rect.top < liquid_height:
+    if mass_object.top < liquid_height:
         # Distance ball is underwater
-        h = mass_object.rect.bottom - liquid_height
+        h = mass_object.bottom - liquid_height
         if mass_object.radius >= h:
             vol_submerged = np.pi * h ** 2 / 3 * (3 * mass_object.radius - h)
         else:
@@ -20,10 +20,10 @@ def acc_buoyancy(mass_object, liquid, liquid_height, gravity):
 
 
 def acc_drag(mass_object, liquid, liquid_height, speed):
-    h = mass_object.rect.bottom - liquid_height
+    h = mass_object.bottom[0] - liquid_height
 
     # Checks if ball is submerged or partially submerged in the liquid
-    if mass_object.rect.top < liquid_height:
+    if mass_object.top < liquid_height:
         # Checks how far the ball is submerged
         if mass_object.radius >= h:
             # Central angle of partial circle
@@ -45,7 +45,7 @@ def acc_drag(mass_object, liquid, liquid_height, speed):
 
 
 def acc_friction(mass_object, height, friction, speed, acc_b, gravity):
-    if mass_object.rect.bottom == height:
+    if mass_object.bottom == height:
         # Equations obtained from equilibrium eq of ball rolling on the floor underwater
         if speed > 0:
             acc_fric = friction * (gravity - acc_b)
@@ -59,11 +59,11 @@ def acc_friction(mass_object, height, friction, speed, acc_b, gravity):
 def speed_change(mass_object, liquid, height, liquid_height, friction, speed, gravity):
 
     # Adds acceleration due to gravity
-    if mass_object.rect.top >= 0:
+    if mass_object.top >= 0:
         speed[1] = speed[1] + gravity
 
     # Buoyancy, friction, and drag if submerged
-    if mass_object.rect.bottom > liquid_height:
+    if mass_object.bottom > liquid_height:
         # Buoyancy
         acc_b = acc_buoyancy(mass_object, liquid, liquid_height, gravity)
         # Drag (vertical and horizontal)
