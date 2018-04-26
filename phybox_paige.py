@@ -15,12 +15,12 @@ size = width, height = 600, 600
 amount_liquid = 600*600*.4
 liquid_height = height - amount_liquid / width # pixels
 
-liquid = molasses
-material = silicon
+liquid = syrup
+material = aluminum
 gravity = 5
 # Coefficient of friction on the floor
 friction = 0.01
-speed = [6,0]
+speed = [0,0]
 tmove = speed
 
 screen = pygame.display.set_mode(size)
@@ -31,19 +31,19 @@ my_particles = []
 
 for n in range(number_of_particles):
     radius = 25#random.randint(20, 50)
-    x = 250#random.randint(radius, width - radius)
-    y = 250#random.randint(radius, height - radius)
+    x = 50#random.randint(radius, width - radius)
+    y = 50#random.randint(radius, height - radius)
 
-    particle = MassObject(x, y, radius, material)
+    particle = MassObject(x, y, radius, material, speed)
     my_particles.append(particle)
 
-    print "x: " + str(particle.x)
-    print "y: " + str(particle.y)
-    print "top: " + str(particle.top)
-    print "bottom: " + str(particle.bottom)
-    print "right: " + str(particle.right)
-    print "left: " + str(particle.left)
-    print "liquid height: " + str(liquid_height)
+  #  print "x: " + str(particle.x)
+   # print "y: " + str(particle.y)
+    #print "top: " + str(particle.top)
+    #print "bottom: " + str(particle.bottom)
+    #print "right: " + str(particle.right)
+    #print "left: " + str(particle.left)
+    #print "liquid height: " + str(liquid_height)
 
 selected_particle = None
 
@@ -69,9 +69,9 @@ while running:
 
 
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             running = False
-
         elif event.type == pygame.MOUSEBUTTONDOWN:
             (mouseX, mouseY) = pygame.mouse.get_pos()
             selected_particle = findParticle(my_particles, mouseX, mouseY)
@@ -79,36 +79,42 @@ while running:
                 selected_particle.color = (50,50,50)
         elif event.type == pygame.MOUSEBUTTONUP:
             if selected_particle != None:
-                selected_particle.color = (0,0,255)
+                selected_particle.color = aluminum.color#(0,0,255)
             selected_particle = None
 
 
 
 
     if selected_particle:
+        #gravity = 0
         (mouseX, mouseY) = pygame.mouse.get_pos()
-        dx = mouseX - selected_particle.x
-        dy = mouseY - selected_particle.y
+        selected_particle.x = mouseX
+        selected_particle.y = mouseY
+        #dx = mouseX - selected_particle.x
+        #dy = mouseY - selected_particle.y
 
 
     screen.fill((255, 255, 255))
     pygame.draw.rect(screen, liquid.color, (0, liquid_height, width, height))
-
+    #pygame.draw.test_rectangle(screen, liquid.color, (0, 50, 50, 50))
 
     for i, particle in enumerate(my_particles):
 
         # Makes ball bounce off walls
-        ball_bounce_wall(particle, size, speed)
-
+        ball_bounce_wall(particle, size, particle.speed)
+        #speed = particle.speed
         # Calculates accelerations due to various forces
-        particle.speed = speed_change(particle, liquid, height, liquid_height, friction, speed, gravity)
+
+        speed_change(particle, liquid, height, liquid_height, friction, particle.speed, gravity)
 
         # Temporary moving variable
-        tmove = balls_dont_move_thru_walls(particle, size, speed)
 
-        #particle.x = tmove[0]
-        #particle.y = tmove[1]
+        tmove = balls_dont_move_thru_walls(particle, size, particle.speed)
+        particle.x += tmove[0]
+        particle.y += tmove[1]
 
+
+        particle.update_boundaries(particle.x, particle.y)
         particle.display(screen)
 
 

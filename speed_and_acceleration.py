@@ -20,7 +20,7 @@ def acc_buoyancy(mass_object, liquid, liquid_height, gravity):
 
 
 def acc_drag(mass_object, liquid, liquid_height, speed):
-    h = mass_object.bottom[0] - liquid_height
+    h = mass_object.bottom - liquid_height
 
     # Checks if ball is submerged or partially submerged in the liquid
     if mass_object.top < liquid_height:

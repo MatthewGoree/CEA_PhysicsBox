@@ -11,21 +11,28 @@ def sphere_volume(radius):
 
 
 class MassObject:
-    def __init__(self, x, y, radius, material):
+    def __init__(self, x, y, radius, material, speed):
         self.x = x
         self.y = y
         self.radius = radius
         self.material = material
         self.thickness = 0
-        self.color = (0,0,255)
+        self.color = material.color
         self.volume = sphere_volume(self.radius)
         self.mass = material.density * self.volume
-        self.speed = 1
+        self.speed = speed
         self.angle = 0
-        self.top = self.y - radius
+        self.top = self.y - self.radius
         self.bottom = self.y + self.radius
-        self.right = self.x + radius
-        self.left = self.x - radius
+        self.right = self.x + self.radius
+        self.left = self.x - self.radius
+
+    def update_boundaries(self, x, y):
+        self.top = y - self.radius
+        self.bottom = y + self.radius
+        self.right = x + self.radius
+        self.left = x - self.radius
+
 
     def display(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius, self.thickness)
@@ -43,6 +50,7 @@ def ball_bounce_wall(mass_object, size, speed):
 def balls_dont_move_thru_walls(mass_object, size, speed):
     # Sets a temporary variable which can be altered w/out affecting speed
     temp_move = []
+
     temp_move.append(speed[0])
     temp_move.append(speed[1])
     # Checks that the distance being moved in one iteration is not greater than the distance from the wall
@@ -61,7 +69,6 @@ def balls_dont_move_thru_walls(mass_object, size, speed):
         if speed[1] > y_dist_bottom:
             temp_move[1] = y_dist_bottom
 
-    print temp_move
-    print temp_move[0]
-    print temp_move[1]
+    #print temp_move
+
     return temp_move
