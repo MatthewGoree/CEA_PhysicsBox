@@ -26,7 +26,7 @@ def color_surface(surface, color):
 # Units converted using 100 pixels = 1 m
 water = liquid(1000, (0, 255, 255), .089)
 olive_oil = liquid(900, (204, 204, 0), 8.4)
-syrup = liquid(1320, (204, 102, 0), 200000)
+syrup = liquid(1320, (150, 102, 0), 200000)
 molasses = liquid(1600, (128, 43, 0), 750000)
 
 silicon = ball_material(2328, (224, 224, 224), .95)

@@ -16,8 +16,10 @@ amount_liquid = 600*600*.4
 liquid_height = height - amount_liquid / width # pixels
 
 liquid = syrup
-material = aluminum
-gravity = 5
+material = copper
+gravity_init = 2
+gravity = gravity_init
+i_count = 0
 # Coefficient of friction on the floor
 friction = 0.01
 speed = [0,0]
@@ -37,14 +39,6 @@ for n in range(number_of_particles):
     particle = MassObject(x, y, radius, material, speed)
     my_particles.append(particle)
 
-  #  print "x: " + str(particle.x)
-   # print "y: " + str(particle.y)
-    #print "top: " + str(particle.top)
-    #print "bottom: " + str(particle.bottom)
-    #print "right: " + str(particle.right)
-    #print "left: " + str(particle.left)
-    #print "liquid height: " + str(liquid_height)
-
 selected_particle = None
 
 
@@ -55,12 +49,14 @@ def findParticle(particles, x, y):
         #if the distance between the mouse and the particle is less than the
         #particle's radius, then the mouse is selecting it
         if math.hypot(p.x-x, p.y-y) <= p.radius:
-            print "distance "
-            print math.hypot(p.x-x, p.y-y)
+            #print "distance "
+            #print math.hypot(p.x-x, p.y-y)
             return p
     return None
 
 running = True
+X = []
+Y = []
 while running:
 
     # Arbitrary framerate
@@ -75,27 +71,35 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             (mouseX, mouseY) = pygame.mouse.get_pos()
             selected_particle = findParticle(my_particles, mouseX, mouseY)
-            if selected_particle:
-                selected_particle.color = (50,50,50)
         elif event.type == pygame.MOUSEBUTTONUP:
-            if selected_particle != None:
-                selected_particle.color = aluminum.color#(0,0,255)
             selected_particle = None
-
 
 
 
     if selected_particle:
         #gravity = 0
+        i_count += 1
         (mouseX, mouseY) = pygame.mouse.get_pos()
         selected_particle.x = mouseX
         selected_particle.y = mouseY
-        #dx = mouseX - selected_particle.x
-        #dy = mouseY - selected_particle.y
+        X.append(mouseX)
+        Y.append(mouseY)
+        gravity = 0
+    else:
+        if i_count > 0:
+            speed_x = (X[i_count-1] - X[0])/i_count
+            speed_y = (Y[i_count-1] - Y[0])/i_count
+            X = []
+            Y = []
+            particle.speed[0] += speed_x
+            particle.speed[1] += speed_y
+            gravity = gravity_init
+        i_count = 0
 
 
     screen.fill((255, 255, 255))
     pygame.draw.rect(screen, liquid.color, (0, liquid_height, width, height))
+    pygame.draw.line(screen, (0, 0, 0), (0, liquid_height), (width, liquid_height), 1)
     #pygame.draw.test_rectangle(screen, liquid.color, (0, 50, 50, 50))
 
     for i, particle in enumerate(my_particles):

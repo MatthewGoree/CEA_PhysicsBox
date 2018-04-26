@@ -36,6 +36,7 @@ class MassObject:
 
     def display(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius, self.thickness)
+        pygame.draw.circle(screen, (0, 0, 0), (int(self.x), int(self.y)), self.radius, 2)
 
     #def move(self):
      #   speed_change(self, liquid, height, liquid_height, friction, speed, gravity)
