@@ -1,6 +1,13 @@
 import numpy as np
+import math
 
-
+def findParticle(particles, x, y):
+    for i, p in enumerate(particles):
+        #if the distance between the mouse and the particle is less than the
+        #particle's radius, then the mouse is selecting it
+        if math.hypot(p.x-x, p.y-y) <= p.radius:
+            return i
+    return None
 
 def acc_buoyancy(mass_object, liquid, liquid_height, gravity):
     # Checks if mass is submerged or partially submerged in liquid

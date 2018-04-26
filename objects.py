@@ -11,7 +11,7 @@ def sphere_volume(radius):
 
 
 class MassObject:
-    def __init__(self, x, y, radius, material, speed):
+    def __init__(self, x, y, radius, material, speed, counter):
         self.x = x
         self.y = y
         self.radius = radius
@@ -21,6 +21,7 @@ class MassObject:
         self.volume = sphere_volume(self.radius)
         self.mass = material.density * self.volume
         self.speed = speed
+        self.counter = counter
         self.angle = 0
         self.top = self.y - self.radius
         self.bottom = self.y + self.radius
